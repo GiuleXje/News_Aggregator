@@ -3,7 +3,7 @@ JFLAGS = -g
 JC = javac
 JVM = java
 
-SRC = main/java/Tema1.java
+SRC := $(shell find main/java -name "*.java")
 
 LIBS = libs
 
