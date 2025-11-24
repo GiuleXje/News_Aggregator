@@ -5,16 +5,14 @@ import InputHandler.NewsReader;
 
 public class Tema1 {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        if (args.length != 3) {
+            System.err.println("USAGE: Tema1 [nr_threads] [articles_file] [additional_file]");
+            return;
+        }
 
-        String line = scanner.nextLine();
-        String[] content = line.split(" ");
-        Database.numberOfThreads = Integer.parseInt(content[0]);
-        Database.articlesFile = content[1];
-        Database.additionalFile = content[2];
-        System.out.println(Database.numberOfThreads);
-        System.out.println(Database.articlesFile);
-        System.out.println(Database.additionalFile);
+        Database.numberOfThreads = Integer.parseInt(args[0]);
+        Database.articlesFile = args[1];
+        Database.additionalFile = args[2];
 
         // let's handle the read first
         Thread[] threads = new Thread[Database.numberOfThreads];
@@ -31,5 +29,6 @@ public class Tema1 {
             }
         }
 
+        Database.closeLog();
     }
 }

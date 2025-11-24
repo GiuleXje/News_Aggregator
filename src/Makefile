@@ -1,23 +1,30 @@
-
 JFLAGS = -g
 JC = javac
 JVM = java
 
-SRC := $(shell find main/java -name "*.java")
+SOURCE_DIR = main/java
+TARGET_DIR = ../target
+
+SRC := $(shell find $(SOURCE_DIR) -name "*.java")
 
 LIBS = libs
 
-CP = .:$(LIBS)/*
+CP = $(TARGET_DIR):$(LIBS)/*
 
-.PHONY: build clean run
+.PHONY: build clean run setup
 
-build:
+setup:
+	@mkdir -p $(TARGET_DIR)
+
+build: setup
 	mvn -f ../pom.xml dependency:copy-dependencies -DoutputDirectory=src/$(LIBS)
-	$(JC) $(JFLAGS) -cp "$(CP)" -d . $(SRC)
+
+	$(JC) $(JFLAGS) -sourcepath $(SOURCE_DIR) -cp "$(CP)" -d $(TARGET_DIR) $(SRC)
 
 run: build
-	$(JVM) -cp "$(CP)" Tema1 $(ARGS)
+	$(JVM) -cp $(CP) Tema1 $(ARGS)
 
 clean:
 	rm -rf *.class
 	rm -rf $(LIBS)
+	rm -rf $(TARGET_DIR)

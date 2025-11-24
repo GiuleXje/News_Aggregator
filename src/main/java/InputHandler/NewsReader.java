@@ -14,7 +14,7 @@ public class NewsReader implements Runnable {
     }
 
     public void run() {
-
+        return;
     }
 
 }
