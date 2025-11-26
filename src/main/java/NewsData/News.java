@@ -2,8 +2,6 @@ package NewsData;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
-import java.util.ArrayList;
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class News {
@@ -17,18 +15,6 @@ public final class News {
     private String[] categories;
 
     public News(){}
-
-
-    public News(JsonNode node) {
-        title = node.get("title").asText();
-        uuid = node.get("uuid").asText();
-        author = node.get("author").asText();
-        text = node.get("text").asText();
-        published = node.get("published").asText();
-        language = node.get("language").asText();
-        url = node.get("url").asText();
-        categories = node.get("categories").asText().split(",");// shouldn't work
-    }
 
     public String getTitle() {
         return title;
