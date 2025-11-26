@@ -4,6 +4,8 @@ import Database.Database;
 import NewsData.News;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.databind.*;
+
+import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.concurrent.BrokenBarrierException;
 
@@ -51,6 +53,43 @@ public final class NewsHandler implements Runnable {
         }
 
 
+        int num_tasks = 4;
+        int start = (int)((double)num_tasks / Database.numberOfThreads * id);
+        int end = (int)((double)(num_tasks / Database.numberOfThreads) * (id + 1));
+
+        // each thread, if possible, is assigned a task
+        for (int i = start; i < end; i++) {
+            switch (i) {
+                case 0: // handle the category output files
+                    CategoriesHandler worker0 = new CategoriesHandler();
+                    try {
+                        worker0.handle();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                case 1: // handle the language output files
+                    LanguageHandler worker1 = new LanguageHandler();
+                    try {
+                        worker1.handle();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                case 2: // generate the file containing all the sorted news
+                    AllArticlesGenerator worker2 = new AllArticlesGenerator();
+                    try {
+                        worker2.handle();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    break;
+                case 3:
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
 }

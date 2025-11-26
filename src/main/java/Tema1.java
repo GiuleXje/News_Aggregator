@@ -19,14 +19,18 @@ public class Tema1 {
         Database.articlesFile = args[1];
         Database.additionalFile = args[2];
 
-        // create the read barrier
+        int pos = args[1].lastIndexOf('/');
+        Database.directory = args[1].substring(0, pos);
+
+        // create a barrier
         Database.initBarrier();
 
+        // get the input files as strings firstly
         String[] articlesFileContent = Files.readAllLines(Paths.get(Database.articlesFile)).toArray(new String[0]);
 
         String[] additionalFileContent = Files.readAllLines(Paths.get(Database.additionalFile)).toArray(new String[0]);
 
-        // let's handle the read first
+        // launch all threads
         Thread[] threads = new Thread[Database.numberOfThreads];
         for (int i = 0; i < Database.numberOfThreads; i++) {
             threads[i] = new Thread(new NewsHandler(i, articlesFileContent, additionalFileContent));
@@ -41,8 +45,7 @@ public class Tema1 {
             }
         }
 
-        Database db = Database.getInstance();
-        db.printAll();
+        Database.out.println(Database.mostRecentArticle.getKey() + " " + Database.mostRecentArticle.getValue());
         Database.closeLog();
     }
 }

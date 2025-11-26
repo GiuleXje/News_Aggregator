@@ -19,10 +19,17 @@ public final class Database {
     public static int numberOfThreads;
     public static String articlesFile;
     public static String additionalFile;
+    public static String directory;
+
     public static int duplicatesFound;
 
     public ConcurrentHashMap<String, Integer> newsWithDuplicateTitles;
     public ConcurrentHashMap<String, Integer> newsWithDuplicateUUID;
+
+    // stats part
+    public static Pair<String, Integer> topCategory;
+    public static Pair<String, Integer> topLanguage;
+    public static Pair<String, String> mostRecentArticle;
 
     public static CyclicBarrier readBarrier;
 
